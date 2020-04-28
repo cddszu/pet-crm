@@ -7,6 +7,7 @@ import { ConnectState } from '@/models/connect';
 import { CurrentUser } from '@/models/user';
 import HeaderDropdown from '../HeaderDropdown';
 import styles from './index.less';
+import { getAccountInfo } from '../../utils/accountInfo'
 
 export interface GlobalHeaderRightProps extends Partial<ConnectProps> {
   currentUser?: CurrentUser;
@@ -14,6 +15,10 @@ export interface GlobalHeaderRightProps extends Partial<ConnectProps> {
 }
 
 class AvatarDropdown extends React.Component<GlobalHeaderRightProps> {
+
+  state: any = {
+    accountInfo: getAccountInfo()
+  }
   onMenuClick = (event: ClickParam) => {
     const { key } = event;
 
@@ -32,14 +37,16 @@ class AvatarDropdown extends React.Component<GlobalHeaderRightProps> {
     history.push(`/account/${key}`);
   };
 
+  componentDidMount() {
+    window.addEventListener('updateAccount', (e) => { 
+      this.setState( {
+        accountInfo: getAccountInfo()
+      })
+    })
+  }
+
   render(): React.ReactNode {
-    const auth = (JSON.parse(localStorage.getItem('antd-pro-authority') as string ) || ['Tourist'])[0]
-    const nameMap = {
-      tourist: '游客',
-      admin: '管理员',
-      user: '医生'
-    }
-    console.log(auth, nameMap)
+    const { accountInfo } = this.state
     const {
       currentUser = {
         avatar: '',
@@ -73,7 +80,7 @@ class AvatarDropdown extends React.Component<GlobalHeaderRightProps> {
       <HeaderDropdown overlay={menuHeaderDropdown}>
         <span className={`${styles.action} ${styles.account}`}>
           <Avatar size="small" className={styles.avatar} src={currentUser.avatar} alt="avatar" />
-          <span className={styles.name}>{nameMap[auth]}</span>
+          <span className={styles.name}>{accountInfo.name}</span>
         </span>
       </HeaderDropdown>
     ) : (

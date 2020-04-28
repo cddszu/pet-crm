@@ -93,13 +93,19 @@ export default defineConfig({
               icon: 'smile',
               path: '/doctor',
               component: './Doctor',
-              authority: ['admin']
+              authority: ['admin'],
             },
             {
               name: 'list.pet',
               icon: 'smile',
               path: '/pet',
               component: './Pet',
+            },
+            {
+              name: '个人设置',
+              icon: 'smile',
+              path: '/accountsettings',
+              component: './AccountSettings',
             },
             {
               component: './404',
