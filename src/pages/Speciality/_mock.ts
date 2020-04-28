@@ -11,14 +11,14 @@ const genList = (current: number, pageSize: number) => {
     const index = (current - 1) * 10 + i;
     tableListDataSource.push({
       id: index,
-      name: `TradeCode ${index}`,
+      name: `特长 ${index}`,
     });
   }
   tableListDataSource.reverse();
   return tableListDataSource;
 };
 
-let tableListDataSource = genList(1, 100);
+let tableListDataSource = genList(1, 20);
 
 function getRule(req: Request, res: Response, u: string) {
   let realUrl = u;
@@ -102,7 +102,25 @@ function postRule(req: Request, res: Response, u: string, b: Request) {
   res.json(result);
 }
 
+function getList(req: Request, res: Response, u: string) {
+  const list = [];
+  for (let i = 0; i < tableListDataSource.length; i += 1) {
+    const index = i;
+    list.push({
+      id: index,
+      value: tableListDataSource[i].name,
+    });
+  }
+  const result = {
+    data: list,
+    success: true,
+  };
+
+  return res.json(result);
+}
+
 export default {
   'GET /api/rule3': getRule,
   'POST /api/rule3': postRule,
+  'GET /api/list4': getList,
 };

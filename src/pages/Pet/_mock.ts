@@ -19,10 +19,15 @@ function randomNum(minNum: number,maxNum: number){
 } 
 
 // mock tableListDataSource
-
+const petNameList = ['柴犬', '贵宾犬', '杜宾犬', '吉娃娃', '法国斗牛犬', '沙皮狗', '阿拉斯加犬', '秋田犬', '牧羊犬', '藏獒']
 function getPetName(index: number) {
-  const nameList = ['柴犬', '贵宾犬', '杜宾犬', '吉娃娃', '法国斗牛犬', '沙皮狗', '阿拉斯加犬', '秋田犬', '牧羊犬', '藏獒']
-  const i = randomNum(0, nameList.length)
+  const nameList = petNameList
+  const i = randomNum(0, nameList.length - 1)
+  return nameList[i]
+}
+function getMasterName(index: number) {
+  const nameList = ['张观博', '张欣竹', '张欣阳', '张刚军', '张扬阳', '张靖阳', '张熙阳', '张嘉萱', '张铭阳', '张飞', '张雨荨', '张文博', '张诗含', '张诗若']
+  const i = randomNum(0, nameList.length - 1)
   return nameList[i]
 }
 
@@ -38,7 +43,7 @@ const genList = (current: number, pageSize: number) => {
       id: index,
       name: `${type} ${index}`,
       type: `${type}`,
-      master: `主人${index}`,
+      master: getMasterName(index),
       birth: `生日${index}`,
       ill: `病情${index}`,
       desc: `描述${index}`,
@@ -139,11 +144,11 @@ function postRule(req: Request, res: Response, u: string, b: Request) {
 
 function getList(req: Request, res: Response, u: string) {
   const list = [];
-  for (let i = 0; i < 5; i += 1) {
+  for (let i = 0; i < petNameList.length; i += 1) {
     const index = i;
     list.push({
       id: index,
-      value: `list${index}`,
+      value: petNameList[i],
     });
   }
   const result = {
@@ -154,26 +159,9 @@ function getList(req: Request, res: Response, u: string) {
   return res.json(result);
 }
 
-function getMasList(req: Request, res: Response, u: string) {
-  const list = [];
-  for (let i = 0; i < 5; i += 1) {
-    const index = i;
-    list.push({
-      id: index,
-      value: `master${index}`,
-    });
-  }
-  const result = {
-    data: list,
-    success: true,
-  };
-
-  return res.json(result);
-}
 
 export default {
   'GET /api/rule5': getRule,
   'POST /api/rule5': postRule,
   'GET /api/list5': getList,
-  'GET /api/master5': getMasList,
 };

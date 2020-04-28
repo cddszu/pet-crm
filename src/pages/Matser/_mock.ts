@@ -4,14 +4,19 @@ import { parse } from 'url';
 import { TableListItem, TableListParams } from '@/pages/Matser/data';
 
 // mock tableListDataSource
+
+const nameList = ['张观博', '张欣竹', '张欣阳', '张刚军', '张扬阳', '张靖阳', '张熙阳', '张嘉萱', '张铭阳', '张飞', '张雨荨', '张文博', '张诗含', '张诗若']
+
 const genList = (current: number, pageSize: number) => {
+  pageSize = nameList.length
+
   const tableListDataSource: TableListItem[] = [];
 
   for (let i = 0; i < pageSize; i += 1) {
     const index = (current - 1) * 10 + i;
     tableListDataSource.push({
       id: index,
-      name: `TradeCode${index}`,
+      name: `${nameList[index]}`,
       address: `address${index}`,
       city: `city ${index}`,
       phone: `phone ${index}`,
@@ -107,7 +112,26 @@ function postRule(req: Request, res: Response, u: string, b: Request) {
   res.json(result);
 }
 
+function getMasList(req: Request, res: Response, u: string) {
+  const list = [];
+  for (let i = 0; i < tableListDataSource.length; i += 1) {
+    const index = i;
+    list.push({
+      id: index,
+      value: tableListDataSource[i].name,
+    });
+  }
+  const result = {
+    data: list,
+    success: true,
+  };
+
+  return res.json(result);
+}
+
+
 export default {
-  'GET /api/rule1': getRule,
-  'POST /api/rule1': postRule,
+  'GET /api/getMasterList': getRule,
+  'POST /api/getMasterList': postRule,
+  'GET /api/master5': getMasList,
 };

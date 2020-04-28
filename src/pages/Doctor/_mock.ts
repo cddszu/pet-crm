@@ -11,15 +11,15 @@ const genList = (current: number, pageSize: number) => {
     const index = (current - 1) * 10 + i;
     tableListDataSource.push({
       id: index,
-      name: `TradeCode ${index}`,
-      specially: `specially${index}`,
+      name: `医生 ${index}`,
+      specially: `特长${index}`,
     });
   }
   tableListDataSource.reverse();
   return tableListDataSource;
 };
 
-let tableListDataSource = genList(1, 100);
+let tableListDataSource = genList(1, 10);
 
 function getRule(req: Request, res: Response, u: string) {
   let realUrl = u;
@@ -124,5 +124,4 @@ function getList(req: Request, res: Response, u: string) {
 export default {
   'GET /api/rule4': getRule,
   'POST /api/rule4': postRule,
-  'GET /api/list4': getList,
 };
