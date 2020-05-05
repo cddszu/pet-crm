@@ -5,7 +5,7 @@ import { TableListItem, TableListParams } from '@/pages/Matser/data';
 
 // mock tableListDataSource
 
-const nameList = ['张观博', '张欣竹', '张欣阳', '张刚军', '张扬阳', '张靖阳', '张熙阳', '张嘉萱', '张铭阳', '张飞', '张雨荨', '张文博', '张诗含', '张诗若']
+const nameList = ['张观博', '张欣竹', '张欣阳', '张刚军', '张扬阳', '张靖阳', '张熙阳', '张嘉萱', '张铭阳', '张飞', '张雨荨', '张文博', '张诗含', '张诗若', '李四', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K']
 
 const genList = (current: number, pageSize: number) => {
   pageSize = nameList.length
@@ -35,10 +35,12 @@ export  function getMaster(req: Request, res: Response, u: string) {
   if (!realUrl || Object.prototype.toString.call(realUrl) !== '[object String]') {
     realUrl = req.url;
   }
-  const { current = 1, pageSize = 10 } = req.query;
+  const { current = 1, pageSize = 10, searchKey = '' } = req.query;
   const params = (parse(realUrl, true).query as unknown) as TableListParams;
+  let dataSource = [...tableListDataSource].filter(d => d.name.toLocaleLowerCase().includes((searchKey as string).toLocaleLowerCase()))
+  let total = dataSource.length
 
-  let dataSource = [...tableListDataSource].slice(
+  dataSource = dataSource.slice(
     ((current as number) - 1) * (pageSize as number),
     (current as number) * (pageSize as number),
   );
@@ -48,7 +50,7 @@ export  function getMaster(req: Request, res: Response, u: string) {
   }
   const result = {
     data: dataSource,
-    total: tableListDataSource.length,
+    total,
     success: true,
     pageSize,
     current: parseInt(`${params.currentPage}`, 10) || 1,

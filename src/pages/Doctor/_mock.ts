@@ -2,6 +2,34 @@
 import { Request, Response } from 'express';
 import { parse } from 'url';
 import { TableListItem, TableListParams } from './data.d';
+import { sprcialityList } from '../Speciality/_mock'
+
+
+
+function randomNum(minNum: number,maxNum: number){ 
+  switch(arguments.length){ 
+      case 1: 
+          return parseInt((Math.random()*minNum+1,10).toString()); 
+      break; 
+      case 2: 
+          return parseInt((Math.random()*(maxNum-minNum+1)+minNum).toString(),10); 
+      break; 
+          default: 
+              return 0; 
+          break; 
+  } 
+} 
+
+function getSpecial(index: number) {
+  const nameList = sprcialityList
+  const i = randomNum(0, nameList.length - 1)
+  return nameList[i].name
+}
+
+
+
+
+
 
 // mock tableListDataSource
 const genList = (current: number, pageSize: number) => {
@@ -12,24 +40,27 @@ const genList = (current: number, pageSize: number) => {
     tableListDataSource.push({
       id: index,
       name: `医生 ${index}`,
-      specially: `特长${index}`,
+      specially: `特长${getSpecial(index)}`,
     });
   }
   tableListDataSource.reverse();
   return tableListDataSource;
 };
 
-let tableListDataSource = genList(1, 10);
+let tableListDataSource = genList(1, 30);
 
 function getRule(req: Request, res: Response, u: string) {
   let realUrl = u;
   if (!realUrl || Object.prototype.toString.call(realUrl) !== '[object String]') {
     realUrl = req.url;
   }
-  const { current = 1, pageSize = 10 } = req.query;
+  const { current = 1, pageSize = 10, searchKey = '' } = req.query;
   const params = (parse(realUrl, true).query as unknown) as TableListParams;
 
-  let dataSource = [...tableListDataSource].slice(
+  let dataSource = [...tableListDataSource].filter((d) =>  d.name.toLocaleLowerCase().includes((searchKey as string).toLocaleLowerCase()))
+  let total = dataSource.length
+
+  dataSource = dataSource.slice(
     ((current as number) - 1) * (pageSize as number),
     (current as number) * (pageSize as number),
   );
@@ -39,7 +70,7 @@ function getRule(req: Request, res: Response, u: string) {
   }
   const result = {
     data: dataSource,
-    total: tableListDataSource.length,
+    total,
     success: true,
     pageSize,
     current: parseInt(`${params.currentPage}`, 10) || 1,

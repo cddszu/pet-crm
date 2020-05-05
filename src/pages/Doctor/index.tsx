@@ -1,6 +1,6 @@
 import { PlusOutlined, AppstoreAddOutlined } from '@ant-design/icons';
-import { Button, Divider, message } from 'antd';
-import React, { useState, useRef } from 'react';
+import { Button, Divider, message, Input } from 'antd';
+import React, { useState, useRef, useCallback } from 'react';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 import { SorterResult } from 'antd/es/table/interface';
@@ -10,6 +10,7 @@ import UpdateForm, { FormValueType } from './components/UpdateForm';
 import { TableListItem } from './data.d';
 import { queryRule, updateRule, addRule, removeRule, getList } from './service';
 
+const { Search } = Input;
 /**
  * 添加节点
  * @param fields
@@ -88,6 +89,7 @@ const TableList: React.FC<{}> = () => {
   const [stepFormValues, setStepFormValues] = useState({});
   const [speLists, getSpeLists] = useState<Array<string>>([]);
   const actionRef = useRef<ActionType>();
+  const [searchKey, SetSearchKey] = useState<string>('')
   const columns: ProColumns<TableListItem>[] = [ 
     {
       title: '序号',
@@ -158,6 +160,18 @@ const TableList: React.FC<{}> = () => {
       handleModalVisible(true);
     }
   }
+  const getDate = useCallback(async (params) => {
+    const newParams = {
+      ...params,
+      searchKey
+    }
+    return queryRule(newParams)
+  }, [searchKey]) 
+
+  const search = useCallback((sk: string) => {
+    SetSearchKey(sk)
+    actionRef.current?.reload(true)
+  }, [])
 
   return (
     <PageHeaderWrapper>
@@ -173,6 +187,7 @@ const TableList: React.FC<{}> = () => {
         }}
         search={false}
         toolBarRender={(action, { selectedRows }) => [
+          <Search onSearch={search} placeholder="请输入医生的姓名" />,
           <Button type="primary" onClick={() => addDo('add')}>
             <PlusOutlined /> 新建
           </Button>,

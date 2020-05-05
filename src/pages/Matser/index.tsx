@@ -1,6 +1,6 @@
 import { PlusOutlined } from '@ant-design/icons';
-import { Button, Divider, message } from 'antd';
-import React, { useState, useRef } from 'react';
+import { Button, Divider, message, Input } from 'antd';
+import React, { useState, useRef, useCallback } from 'react';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 import { SorterResult } from 'antd/es/table/interface';
@@ -10,6 +10,7 @@ import UpdateForm, { FormValueType } from './components/UpdateForm';
 import { TableListItem } from './data.d';
 import { queryRule, updateRule, addRule, removeRule } from './service';
 
+const { Search } = Input;
 /**
  * 添加节点
  * @param fields
@@ -74,19 +75,15 @@ const handleRemove = async (item : TableListItem) => {
   }
 };
 
-const getDate = async (params:any) => {
-  const newParams = {
-    ...params,
-    pageSize: 10,
-  }
-  return queryRule(newParams)
-}
 
 const TableList: React.FC<{}> = () => {
   const [createModalVisible, handleModalVisible] = useState<boolean>(false);
   const [updateModalVisible, handleUpdateModalVisible] = useState<boolean>(false);
   const [stepFormValues, setStepFormValues] = useState({});
   const actionRef = useRef<ActionType>();
+
+  const [searchKey, SetSearchKey] = useState<string>('')
+
   const columns: ProColumns<TableListItem>[] = [ 
     {
       title: '序号',
@@ -168,6 +165,19 @@ const TableList: React.FC<{}> = () => {
     },
   ];
 
+  const getDate = useCallback(async (params) => {
+    const newParams = {
+      ...params,
+      searchKey
+    }
+    return queryRule(newParams)
+  }, [searchKey]) 
+
+  const search = useCallback((sk: string) => {
+    console.log(sk)
+    SetSearchKey(sk)
+    actionRef.current?.reload(true)
+  }, [])
   return (
     <PageHeaderWrapper>
       <ProTable<TableListItem>
@@ -182,6 +192,7 @@ const TableList: React.FC<{}> = () => {
         }}
         search={false}
         toolBarRender={(action, { selectedRows }) => [
+          <Search onSearch={search} placeholder="请输入主人的姓名" />,
           <Button type="primary" onClick={() => handleModalVisible(true)}>
             <PlusOutlined /> 新建
           </Button>,

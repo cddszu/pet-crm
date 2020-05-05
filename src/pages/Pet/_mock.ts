@@ -63,7 +63,8 @@ function getRule(req: Request, res: Response, u: string) {
   }
   const { current = 1, pageSize = 10, searchKey = '' } = req.query;
   const params = (parse(realUrl, true).query as unknown) as TableListParams;
-  let dataSource = [...tableListDataSource].filter(d => d.name.includes(searchKey as string) || d.master.name?.includes(searchKey as string));
+  let dataSource = [...tableListDataSource].filter(d => d.name.toLocaleLowerCase().includes((searchKey as string).toLocaleLowerCase()) 
+    || d.master.name?.toLocaleLowerCase().includes((searchKey as string).toLocaleLowerCase()));
   let total = dataSource.length
 
 
