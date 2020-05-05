@@ -46,7 +46,7 @@ export default defineConfig({
           routes: [
             {
               path: '/',
-              redirect: '/user/login',
+              redirect: '/pet',
             }, // {
             //   path: '/welcome',
             //   name: 'welcome',
