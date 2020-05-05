@@ -28,7 +28,9 @@ const genList = (current: number, pageSize: number) => {
 
 let tableListDataSource = genList(1, 100);
 
-function getRule(req: Request, res: Response, u: string) {
+export const mastList =  tableListDataSource
+
+export  function getMaster(req: Request, res: Response, u: string) {
   let realUrl = u;
   if (!realUrl || Object.prototype.toString.call(realUrl) !== '[object String]') {
     realUrl = req.url;
@@ -131,7 +133,7 @@ function getMasList(req: Request, res: Response, u: string) {
 
 
 export default {
-  'GET /api/getMasterList': getRule,
+  'GET /api/getMasterList': getMaster,
   'POST /api/getMasterList': postRule,
   'GET /api/master5': getMasList,
 };

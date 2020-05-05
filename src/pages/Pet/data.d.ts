@@ -2,7 +2,7 @@ export interface TableListItem {
   id: number;
   name: string;
   type: string;
-  master: string;
+  master: {[key: string]: any};
   birth: string;
   ill: string;
   desc: string;

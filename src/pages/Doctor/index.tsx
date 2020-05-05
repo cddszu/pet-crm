@@ -74,7 +74,6 @@ const handleRemove = async (item : TableListItem) => {
 
 
 const getDate = async (params:any) => {
-  console.log('p', params);
   const newParams = {
     ...params,
     pageSize: 10,

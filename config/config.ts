@@ -46,7 +46,7 @@ export default defineConfig({
           routes: [
             {
               path: '/',
-              redirect: '/pet',
+              redirect: '/user/login',
             }, // {
             //   path: '/welcome',
             //   name: 'welcome',
@@ -106,6 +106,7 @@ export default defineConfig({
               icon: 'smile',
               path: '/accountsettings',
               component: './AccountSettings',
+              authority: ['user'],
             },
             {
               component: './404',

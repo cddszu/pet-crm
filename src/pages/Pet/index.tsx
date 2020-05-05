@@ -1,6 +1,6 @@
 import { PlusOutlined, AppstoreAddOutlined } from '@ant-design/icons';
-import { Button, Divider, message } from 'antd';
-import React, { useState, useRef } from 'react';
+import { Button, Divider, message, Modal, Input } from 'antd';
+import React, { useState, useRef, useCallback } from 'react';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 import { SorterResult } from 'antd/es/table/interface';
@@ -10,6 +10,7 @@ import UpdateForm, { FormValueType } from './components/UpdateForm';
 import { TableListItem } from './data.d';
 import { queryRule, updateRule, addRule, removeRule, getList, getMasList } from './service';
 
+const { Search } = Input;
 /**
  * 添加节点
  * @param fields
@@ -77,14 +78,6 @@ const handleRemove = async (item : TableListItem) => {
 };
 
 
-const getDate = async (params:any) => {
-  console.log('p', params);
-  const newParams = {
-    ...params,
-    pageSize: 10,
-  }
-  return queryRule(newParams)
-}
 
 const TableList: React.FC<{}> = () => {
   const [sorter, setSorter] = useState<string>('');
@@ -94,6 +87,10 @@ const TableList: React.FC<{}> = () => {
   const [speLists, getSpeLists] = useState<Array<string>>([]);
   const [masterLists, getMasterLists] = useState<Array<string>>([]);
   const actionRef = useRef<ActionType>();
+
+  const [searchKey, SetSearchKey] = useState<string>('')
+
+
   const columns: ProColumns<TableListItem>[] = [ 
     {
       title: '编号',
@@ -133,6 +130,9 @@ const TableList: React.FC<{}> = () => {
           message: '主人为必填项',
         },
       ],
+      render: (text: any) => {
+        return <a onClick={() => showMaster(text)} >{text.name}</a>
+      }
     },
     {
       title: '生日',
@@ -204,6 +204,33 @@ const TableList: React.FC<{}> = () => {
     }
   }
 
+  const getDate = useCallback(async (params) => {
+    const newParams = {
+      ...params,
+      searchKey
+    }
+    return queryRule(newParams)
+  }, [searchKey]) 
+
+  const showMaster = useCallback((info: any) => {
+    Modal.info({
+      title: info.name,
+      content: (
+        <div>
+          <p>城市： {info.city}</p>
+          <p>地址： {info.address}</p>
+          <p>手机号： {info.phone}</p>
+        </div>
+      )
+    });
+  },[]) 
+
+  const search = useCallback((sk: string) => {
+    console.log(sk)
+    SetSearchKey(sk)
+    actionRef.current?.reload(true)
+  }, [])
+
   const addDo = async (type:string) => {
     getMasterL();
     const list = await getList();
@@ -230,7 +257,9 @@ const TableList: React.FC<{}> = () => {
           }
         }}
         search={false}
+        dateFormatter={'string'}
         toolBarRender={(action, { selectedRows }) => [
+          <Search onSearch={search} placeholder="请输入宠物或者主人的姓名" />,
           <Button type="primary" onClick={() => addDo('add')}>
             <PlusOutlined /> 新建
           </Button>,

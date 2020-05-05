@@ -2,6 +2,7 @@
 import { Request, Response } from 'express';
 import { parse } from 'url';
 import { TableListItem, TableListParams } from './data.d';
+import { mastList } from '../Matser/_mock'
 
 
 function randomNum(minNum: number,maxNum: number){ 
@@ -26,7 +27,7 @@ function getPetName(index: number) {
   return nameList[i]
 }
 function getMasterName(index: number) {
-  const nameList = ['张观博', '张欣竹', '张欣阳', '张刚军', '张扬阳', '张靖阳', '张熙阳', '张嘉萱', '张铭阳', '张飞', '张雨荨', '张文博', '张诗含', '张诗若']
+  const nameList = mastList
   const i = randomNum(0, nameList.length - 1)
   return nameList[i]
 }
@@ -53,27 +54,27 @@ const genList = (current: number, pageSize: number) => {
   return tableListDataSource;
 };
 
-let tableListDataSource = genList(1, 10);
+let tableListDataSource = genList(1, 50);
 
 function getRule(req: Request, res: Response, u: string) {
   let realUrl = u;
   if (!realUrl || Object.prototype.toString.call(realUrl) !== '[object String]') {
     realUrl = req.url;
   }
-  const { current = 1, pageSize = 10 } = req.query;
+  const { current = 1, pageSize = 10, searchKey = '' } = req.query;
   const params = (parse(realUrl, true).query as unknown) as TableListParams;
+  let dataSource = [...tableListDataSource].filter(d => d.name.includes(searchKey as string) || d.master.name?.includes(searchKey as string));
+  let total = dataSource.length
 
-  let dataSource = [...tableListDataSource].slice(
+
+  dataSource = dataSource.slice(
     ((current as number) - 1) * (pageSize as number),
     (current as number) * (pageSize as number),
   );
-
-  if (params.name) {
-    dataSource = dataSource.filter((data) => data.name.includes(params.name || ''));
-  }
+  
   const result = {
     data: dataSource,
-    total: tableListDataSource.length,
+    total,
     success: true,
     pageSize,
     current: parseInt(`${params.currentPage}`, 10) || 1,
