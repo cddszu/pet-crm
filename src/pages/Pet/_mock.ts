@@ -107,7 +107,7 @@ function postRule(req: Request, res: Response, u: string, b: Request) {
           id: tableListDataSource.length,
           name,
           type,
-          master,
+          master: mastList.find(m => m.name === master),
           birth,
           ill,
           desc
@@ -123,7 +123,9 @@ function postRule(req: Request, res: Response, u: string, b: Request) {
         tableListDataSource = tableListDataSource.map((item) => {
           if (item.id === id) {
             newRule = { ...item, desc, name, type, master, birth, ill};
-            return { ...item, desc, name, type, master, birth, ill};
+            return { ...item, desc, name, type, 
+              master: mastList.find(m => m.name === master), 
+              birth, ill};
           }
           return item;
         });
