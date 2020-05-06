@@ -87,21 +87,13 @@ export default {
       });
       return;
     }
-    if (password === 'doctor' && userName === 'doctor') {
+    if(password && userName) {
       res.send({
         status: 'ok',
         type,
         currentAuthority: 'user',
       });
-      return;
-    }
-    if (type === 'mobile') {
-      res.send({
-        status: 'ok',
-        type,
-        currentAuthority: 'admin',
-      });
-      return;
+      return 
     }
 
     res.send({

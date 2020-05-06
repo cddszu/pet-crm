@@ -33,7 +33,7 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
     name: props.values.name,
     id: props.values.id,
     type: props.values.type,
-    master: props.values.master,
+    master: props.values.master?.name,
     birth: props.values.birth,
     ill: props.values.ill,
     desc: props.values.desc,

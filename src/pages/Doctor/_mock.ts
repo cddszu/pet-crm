@@ -38,7 +38,7 @@ const genList = (current: number, pageSize: number) => {
   for (let i = 0; i < pageSize; i += 1) {
     const index = (current - 1) * 10 + i;
     tableListDataSource.push({
-      id: index,
+      id: 'user' + index,
       name: `医生 ${index}`,
       specially: `特长${getSpecial(index)}`,
       phone: `phone ${index}`,
@@ -102,7 +102,7 @@ function postRule(req: Request, res: Response, u: string, b: Request) {
       (() => {
         const i = Math.ceil(Math.random() * 10000);
         const newRule = {
-          id: tableListDataSource.length,
+          id: 'user' + tableListDataSource.length,
           name,
           specially,
           sex, age, phone

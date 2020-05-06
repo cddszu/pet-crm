@@ -92,7 +92,7 @@ const TableList: React.FC<{}> = () => {
   const [searchKey, SetSearchKey] = useState<string>('')
   const columns: ProColumns<TableListItem>[] = [ 
     {
-      title: '序号',
+      title: '账号',
       dataIndex: 'id',
       hideInSearch: true,
       hideInForm: true,
