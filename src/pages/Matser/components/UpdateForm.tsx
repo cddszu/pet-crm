@@ -31,6 +31,8 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
     address: props.values.address,
     city: props.values.city,
     phone: props.values.phone,
+    sex: props.values.sex,
+    age: props.values.age,
   });
 
 
@@ -49,6 +51,8 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
     formVals.address = fieldsValue.address;
     formVals.city = fieldsValue.city;
     formVals.phone = fieldsValue.phone;
+    formVals.age = fieldsValue.age;
+    formVals.sex = fieldsValue.sex;
     handleUpdate(formVals);
   };
 
@@ -59,6 +63,20 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
           name="name"
           label="名称"
           rules={[{ required: true, message: '请输入名称！' }]}
+        >
+          <Input placeholder="请输入" />
+        </FormItem>
+        <FormItem
+          name="age"
+          label="年龄"
+          rules={[{ required: true, message: '请输入年龄！' }]}
+        >
+          <Input placeholder="请输入" />
+        </FormItem>
+        <FormItem
+          name="sex"
+          label="性别"
+          rules={[{ required: true, message: '请输入性别！' }]}
         >
           <Input placeholder="请输入" />
         </FormItem>
@@ -97,7 +115,6 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
       </>
     );
   };
-
   return (
     <Modal
       width={640}
@@ -117,6 +134,8 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
           address: formVals.address,
           city: formVals.city,
           phone: formVals.phone,
+          age: formVals.age,
+          sex: formVals.sex,
         }}
       >
         {renderContent()}

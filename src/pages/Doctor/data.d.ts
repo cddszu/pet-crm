@@ -2,6 +2,9 @@ export interface TableListItem {
   id: number;
   name: string;
   specially: string;
+  phone: string;
+  age: number;
+  sex: string;
 }
 
 export interface TableListPagination {

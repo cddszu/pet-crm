@@ -41,6 +41,9 @@ const genList = (current: number, pageSize: number) => {
       id: index,
       name: `医生 ${index}`,
       specially: `特长${getSpecial(index)}`,
+      phone: `phone ${index}`,
+      age: randomNum(12,60),
+      sex: randomNum(1,10) > 5 ? '男' : '女'
     });
   }
   tableListDataSource.reverse();
@@ -87,7 +90,7 @@ function postRule(req: Request, res: Response, u: string, b: Request) {
   }
 
   const body = (b && b.body) || req.body;
-  const { method, name, desc, id, specially } = body;
+  const { method, name, desc, id, specially, sex, age, phone } = body;
   console.log(method)
   switch (method) {
     /* eslint no-case-declarations:0 */
@@ -102,6 +105,7 @@ function postRule(req: Request, res: Response, u: string, b: Request) {
           id: tableListDataSource.length,
           name,
           specially,
+          sex, age, phone
         };
         tableListDataSource.unshift(newRule);
         return res.json(newRule);

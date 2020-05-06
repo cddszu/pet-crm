@@ -98,7 +98,7 @@ const TableList: React.FC<{}> = () => {
       hideInForm: true,
     },
     {
-      title: '名称',
+      title: '姓名',
       dataIndex: 'name',
       hideInSearch: true,
       rules: [
@@ -116,6 +116,35 @@ const TableList: React.FC<{}> = () => {
         {
           required: true,
           message: '特长为必填项',
+        },
+      ],
+    },
+    {
+      title: '性别',
+      dataIndex: 'sex',
+      hideInSearch: true,
+      rules: [
+        {
+          required: true,
+          message: '性别为必填项',
+        },
+      ],
+    },
+    {
+      title: '年龄',
+      dataIndex: 'age',
+      hideInSearch: true,
+      rules: [
+      ],
+    },
+    {
+      title: '手机号码',
+      dataIndex: 'phone',
+      hideInSearch: true,
+      rules: [
+        {
+          required: true,
+          message: '手机号码为必填项',
         },
       ],
     },

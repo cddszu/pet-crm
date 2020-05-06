@@ -4,6 +4,8 @@ export interface TableListItem {
   address: string;
   city: string;
   phone: string;
+  age: number;
+  sex: string
 }
 
 export interface TableListPagination {
