@@ -117,8 +117,8 @@ function postRule(req: Request, res: Response, u: string, b: Request) {
         let newRule = {};
         tableListDataSource = tableListDataSource.map((item) => {
           if (item.id === id) {
-            newRule = { ...item, desc, name, specially};
-            return { ...item, desc, name, specially};
+            newRule = { ...item, desc, name, specially,sex, age, phone};
+            return { ...item, desc, name, specially,sex, age, phone};
           }
           return item;
         });

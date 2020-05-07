@@ -37,9 +37,7 @@ const handleUpdate = async (fields: FormValueType) => {
   const hide = message.loading('正在提交');
   try {
     await updateRule({
-      name: fields.name,
-      id: fields.id,
-      specially: fields.specially,
+      ...fields
     });
     hide();
 

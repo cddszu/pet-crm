@@ -55,6 +55,8 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
     formVals.age = fieldsValue.age;
     formVals.sex = fieldsValue.sex;
     formVals.phone = fieldsValue.phone;
+
+    console.log(formVals)
     handleUpdate(formVals);
   };
 
