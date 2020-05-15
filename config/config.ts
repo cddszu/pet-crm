@@ -81,13 +81,13 @@ export default defineConfig({
               path: '/master',
               component: './Matser',
             },
-            // {
-            //   name: 'list.speciality',
-            //   icon: 'smile',
-            //   path: '/speciality',
-            //   component: './Speciality',
-            //   authority: ['admin'],
-            // },
+            {
+              name: 'list.speciality',
+              icon: 'smile',
+              path: '/speciality',
+              component: './Speciality',
+              authority: ['admin'],
+            },
             {
               name: 'list.doctor',
               icon: 'smile',
